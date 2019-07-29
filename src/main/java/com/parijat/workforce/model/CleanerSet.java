@@ -1,13 +1,16 @@
 package com.parijat.workforce.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 
-@Data
+@Getter
+@Setter
 @ToString
 public class CleanerSet implements Serializable
 {
@@ -27,7 +30,7 @@ public class CleanerSet implements Serializable
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CleanerSet that = (CleanerSet) o;
-        return senior.equals(that.senior) &&
-                junior.equals(that.junior);
+        return Objects.equals(senior, that.senior) &&
+                Objects.equals(junior, that.junior);
     }
 }

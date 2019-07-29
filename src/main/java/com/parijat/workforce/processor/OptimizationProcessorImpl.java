@@ -121,6 +121,6 @@ public class OptimizationProcessorImpl implements IOptimizationProcessor
 
     private Integer getMaximumCleanerCount(Integer roomSize, Integer capacity)
     {
-        return (roomSize % capacity) == 0 ? (roomSize / capacity) : (roomSize / capacity) + 1;
+        return (roomSize / capacity) + 1;
     }
 }
