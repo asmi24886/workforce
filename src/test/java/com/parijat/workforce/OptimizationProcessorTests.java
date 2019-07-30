@@ -23,10 +23,10 @@ public class OptimizationProcessorTests
     private OptimizationProcessorImpl optimizationProcessor;
 
     @Test
-    public void Test_getMaximumCleanerCount()
+    public void Test_getCeil()
     {
-        log.info("Testing Non-Public getMaximumCleanerCount()...");
-        Integer actual = ReflectionTestUtils.invokeMethod(optimizationProcessor,"getMaximumCleanerCount",
+        log.info("Testing Non-Public getCeil()...");
+        Integer actual = ReflectionTestUtils.invokeMethod(optimizationProcessor,"getCeil",
                 25,10);
         Integer expected = 3;
         log.info("Actual : "+actual+", expected : "+expected);
@@ -39,7 +39,7 @@ public class OptimizationProcessorTests
         log.info("Testing Non-Public findOptimumCombination()...");
         CleanerSet actual =
                 ReflectionTestUtils.invokeMethod(optimizationProcessor, "findOptimumCombination",
-                        25,3,2,10,6);
+                        25,3,10,6);
         CleanerSet expected = new CleanerSet();
         expected.setSenior(2);
         expected.setJunior(1);

@@ -5,7 +5,6 @@ import com.parijat.workforce.model.CleanerSet;
 import com.parijat.workforce.model.RequestModel;
 import com.parijat.workforce.processor.IOptimizationProcessor;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +43,114 @@ public class WorkforceControllerRestAPITests
     @MockBean
     private IOptimizationProcessor optimizationProcessor;
 
-    private List<CleanerSet> prepareTestData1()
+    @Test
+    public void Test_getOptimumSolutionAPI_Sample1() throws Exception
+    {
+        RequestModel request = new RequestModel();
+        request.setRooms(new Integer[]{35, 21, 17, 28});
+        request.setSenior(10);
+        request.setJunior(6);
+
+        Errors errors = new BeanPropertyBindingResult(request, "request");
+
+        given(controller.getOptimumSolution(request,errors)).willReturn(new ResponseEntity<>(prepareResultData1(), HttpStatus.OK));
+
+        String json = "{ \"rooms\": [35, 21, 17, 28], \"senior\": 10, \"junior\": 6 }";
+        callRestAPItoOptimize(json);
+    }
+
+    @Test
+    public void Test_getOptimumSolutionAPI_Sample2() throws Exception
+    {
+        RequestModel request = new RequestModel();
+        request.setRooms(new Integer[]{24,28});
+        request.setSenior(11);
+        request.setJunior(6);
+
+        Errors errors = new BeanPropertyBindingResult(request, "request");
+
+        given(controller.getOptimumSolution(request,errors)).willReturn(new ResponseEntity<>(prepareResultData2(), HttpStatus.OK));
+
+        String json = "{ \"rooms\": [24,28], \"senior\": 11, \"junior\": 6 }";
+        callRestAPItoOptimize(json);
+    }
+
+    @Test
+    public void Test_getOptimumSolutionAPI_Sample3() throws Exception
+    {
+        RequestModel request = new RequestModel();
+        request.setRooms(new Integer[]{0});
+        request.setSenior(11);
+        request.setJunior(6);
+
+        Errors errors = new BeanPropertyBindingResult(request, "request");
+
+        given(controller.getOptimumSolution(request,errors)).willReturn(new ResponseEntity<>(prepareResultData3(), HttpStatus.OK));
+
+        String json = "{ \"rooms\": [0], \"senior\": 11, \"junior\": 6 }";
+        callRestAPItoOptimize(json);
+    }
+
+    @Test
+    public void Test_getOptimumSolutionAPI_Sample4() throws Exception
+    {
+        RequestModel request = new RequestModel();
+        request.setRooms(new Integer[]{110});
+        request.setSenior(11);
+        request.setJunior(6);
+
+        Errors errors = new BeanPropertyBindingResult(request, "request");
+
+        given(controller.getOptimumSolution(request,errors)).willReturn(new ResponseEntity<>(prepareResultData3(), HttpStatus.OK));
+
+        String json = "{ \"rooms\": [110], \"senior\": 11, \"junior\": 6 }";
+        callRestAPItoOptimize(json);
+    }
+
+    @Test
+    public void Test_getOptimumSolutionAPI_Sample5() throws Exception
+    {
+        RequestModel request = new RequestModel();
+        request.setRooms(new Integer[]{11});
+        request.setSenior(10);
+        request.setJunior(6);
+
+        Errors errors = new BeanPropertyBindingResult(request, "request");
+
+        given(controller.getOptimumSolution(request,errors)).willReturn(new ResponseEntity<>(prepareResultData4(), HttpStatus.OK));
+
+        String json = "{ \"rooms\": [11], \"senior\": 10, \"junior\": 6 }";
+        callRestAPItoOptimize(json);
+    }
+
+    @Test
+    public void Test_getOptimumSolutionAPI_Sample6() throws Exception
+    {
+        RequestModel request = new RequestModel();
+        request.setRooms(new Integer[]{-10});
+        request.setSenior(11);
+        request.setJunior(6);
+
+        Errors errors = new BeanPropertyBindingResult(request, "request");
+
+        given(controller.getOptimumSolution(request,errors)).willReturn(new ResponseEntity<>(prepareResultData3(), HttpStatus.OK));
+
+        String json = "{ \"rooms\": [-10], \"senior\": 11, \"junior\": 6 }";
+        callRestAPItoOptimize(json);
+    }
+
+    private void callRestAPItoOptimize(String json) throws Exception
+    {
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/workforce/optimize")
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    private List<CleanerSet> prepareResultData1()
     {
         List<CleanerSet> expected = new ArrayList<>();
         CleanerSet cleanerSet = new CleanerSet();
@@ -70,7 +176,7 @@ public class WorkforceControllerRestAPITests
         return expected;
     }
 
-    private List<CleanerSet> prepareTestData2()
+    private List<CleanerSet> prepareResultData2()
     {
         List<CleanerSet> expected = new ArrayList<>();
         CleanerSet cleanerSet = new CleanerSet();
@@ -86,45 +192,25 @@ public class WorkforceControllerRestAPITests
         return expected;
     }
 
-    @Test
-    public void Test_getOptimumSolutionAPI_Sample1() throws Exception
+    private List<CleanerSet> prepareResultData3()
     {
-        RequestModel request = new RequestModel();
-        request.setRooms(new Integer[]{35, 21, 17, 28});
-        request.setSenior(10);
-        request.setJunior(6);
+        List<CleanerSet> expected = new ArrayList<>();
+        CleanerSet cleanerSet = new CleanerSet();
+        cleanerSet.setSenior(0);
+        cleanerSet.setJunior(0);
+        expected.add(cleanerSet);
 
-        Errors errors = new BeanPropertyBindingResult(request, "request");
-
-        given(controller.getOptimumSolution(request,errors)).willReturn(new ResponseEntity<>(prepareTestData1(), HttpStatus.OK));
-
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/workforce/optimize")
-                .content("{ \"rooms\": [35, 21, 17, 28], \"senior\": 10, \"junior\": 6 }")
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
-                .andDo(print())
-                .andExpect(status().isOk());
+        return expected;
     }
 
-    @Test
-    public void Test_getOptimumSolutionAPI_Sample2() throws Exception
+    private List<CleanerSet> prepareResultData4()
     {
-        RequestModel request = new RequestModel();
-        request.setRooms(new Integer[]{24,28});
-        request.setSenior(11);
-        request.setJunior(6);
+        List<CleanerSet> expected = new ArrayList<>();
+        CleanerSet cleanerSet = new CleanerSet();
+        cleanerSet.setSenior(1);
+        cleanerSet.setJunior(0);
+        expected.add(cleanerSet);
 
-        Errors errors = new BeanPropertyBindingResult(request, "request");
-
-        given(controller.getOptimumSolution(request,errors)).willReturn(new ResponseEntity<>(prepareTestData2(), HttpStatus.OK));
-
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/workforce/optimize")
-                .content("{ \"rooms\": [24,28], \"senior\": 11, \"junior\": 6 }")
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
-                .andDo(print())
-                .andExpect(status().isOk());
+        return expected;
     }
 }

@@ -39,79 +39,84 @@ public class OptimizationProcessorImpl implements IOptimizationProcessor
     private CleanerSet findOptimumCleanerSet(Integer numberOfRooms, Integer seniorCapacity, Integer juniorCapacity)
     {
         Integer remainingRoomNumbers;
-        CleanerSet cleanerSet;
+        CleanerSet cleanerSet = new CleanerSet();
 
-        // Get both minimum Senior and Junior Count and deduct it from the room's capacity
-        remainingRoomNumbers = numberOfRooms - ((minimumSerniorCount*seniorCapacity)
-                +(minimumJuniorCount*juniorCapacity));
-
-        if(remainingRoomNumbers < 0)
+        if(numberOfRooms > 0 && numberOfRooms <= 100)
         {
-            remainingRoomNumbers = 0;
-        }
+            // Get both minimum Senior and Junior Count and deduct it from the room's capacity
+            remainingRoomNumbers = numberOfRooms - ((minimumSerniorCount * seniorCapacity)
+                    + (minimumJuniorCount * juniorCapacity));
 
-        // First Case - If all seniors can complete remainingRooms
-        if(remainingRoomNumbers % seniorCapacity == 0)
-        {
-            cleanerSet = new CleanerSet();
-            cleanerSet.setSenior(remainingRoomNumbers / seniorCapacity);
-            cleanerSet.setJunior(0);
-        }
-        // Second Case - If all juniors can complete remainingRooms
-        else if(remainingRoomNumbers % juniorCapacity == 0)
-        {
-            cleanerSet = new CleanerSet();
-            cleanerSet.setSenior(0);
-            cleanerSet.setJunior(remainingRoomNumbers / juniorCapacity);
-        }
-        // Third Case - It is needed to find out a optimum combination of seniors and juniors
-        else
-        {
-            // Find the maximum number of junior can clean the remaining rooms
-            Integer maxJuniors = getMaximumCleanerCount(remainingRoomNumbers,juniorCapacity);
+            if (remainingRoomNumbers < 0)
+            {
+                remainingRoomNumbers = 0;
+            }
+            // First Case - If all seniors can complete remainingRooms
+            if (remainingRoomNumbers % seniorCapacity == 0)
+            {
+                cleanerSet.setSenior(remainingRoomNumbers / seniorCapacity);
+                cleanerSet.setJunior(0);
+            }
+            // Second Case - If all juniors can complete remainingRooms
+            else if (remainingRoomNumbers % juniorCapacity == 0)
+            {
+                cleanerSet = new CleanerSet();
+                cleanerSet.setSenior(0);
+                cleanerSet.setJunior(remainingRoomNumbers / juniorCapacity);
+            }
+            // Third Case - It is needed to find out a optimum combination of seniors and juniors
+            else
+            {
+                // Find the maximum number of senior can clean the remaining rooms
+                Integer maxSeniors = getCeil(remainingRoomNumbers, seniorCapacity);
 
-            // Find the maximum number of senior can clean the remaining rooms
-            Integer maxSeniors = getMaximumCleanerCount(remainingRoomNumbers,seniorCapacity);
+                cleanerSet = findOptimumCombination(remainingRoomNumbers, maxSeniors,
+                        seniorCapacity, juniorCapacity);
+            }
 
-            cleanerSet = findOptimumCombination(remainingRoomNumbers, maxSeniors, maxJuniors,
-                    seniorCapacity, juniorCapacity);
+            // Add the minimum number of seniors and juniors
+            cleanerSet.setSenior(cleanerSet.getSenior() + minimumSerniorCount);
+            cleanerSet.setJunior(cleanerSet.getJunior() + minimumJuniorCount);
         }
-
-        // Add the minimum number of seniors and juniors
-        cleanerSet.setSenior(cleanerSet.getSenior()+minimumSerniorCount);
-        cleanerSet.setJunior(cleanerSet.getJunior()+minimumJuniorCount);
 
         return cleanerSet;
     }
 
-    private CleanerSet findOptimumCombination(Integer roomCapacity, Integer maxSeniors,
-                                              Integer maxJuniors, Integer seniorCapacity,
+    private CleanerSet findOptimumCombination(Integer roomCapacity, Integer maxSeniors, Integer seniorCapacity,
                                               Integer juniorCapacity)
     {
-        int seniorCounter;
-        int juniorCounter;
-
         CleanerSet lowestCleanerSet = new CleanerSet();
-        lowestCleanerSet.setSenior(maxSeniors);
-        lowestCleanerSet.setJunior(maxJuniors);
+        int lowestCap;
+        int counter;
 
-        for(seniorCounter = 0 ; seniorCounter <= maxSeniors ; seniorCounter++)
+        if(roomCapacity > 0)
         {
-            for(juniorCounter = 0 ; juniorCounter <= maxJuniors ; juniorCounter++)
+            // Lets assume the remaining rooms will be cleaned by the seniors
+            lowestCleanerSet.setSenior(maxSeniors);
+            lowestCap = utility.computeTotalCapacity(lowestCleanerSet, seniorCapacity, juniorCapacity);
+
+            // Now we will check the combination with the junior to achieve optimum capacity
+            for (counter = 0; counter <= maxSeniors; counter++)
             {
-                CleanerSet currentCleanerSet = new CleanerSet();
-                currentCleanerSet.setSenior(seniorCounter);
-                currentCleanerSet.setJunior(juniorCounter);
+                int capacity = roomCapacity;
 
-                Integer currentCapacity = utility.computeTotalCapacity(currentCleanerSet,
-                        seniorCapacity,juniorCapacity);
+                // Check the remaining part after seniors' clean up
+                capacity = capacity - (counter * seniorCapacity);
 
-                Integer existingCapacity = utility.computeTotalCapacity(lowestCleanerSet,
-                        seniorCapacity,juniorCapacity);
-
-                if(currentCapacity >= roomCapacity && currentCapacity <= existingCapacity)
+                if (capacity > 0)
                 {
-                    lowestCleanerSet = currentCleanerSet;
+                    // Find the number of Juniors required to complete the remaining rooms
+                    int numberOfJuniors = getCeil(capacity, juniorCapacity);
+
+                    // Find the total Capacity
+                    int totalCap = (counter * seniorCapacity) + (numberOfJuniors * juniorCapacity);
+
+                    if (totalCap >= roomCapacity && totalCap < lowestCap)
+                    {
+                        lowestCap = totalCap;
+                        lowestCleanerSet.setSenior(counter);
+                        lowestCleanerSet.setJunior(numberOfJuniors);
+                    }
                 }
             }
         }
@@ -119,8 +124,8 @@ public class OptimizationProcessorImpl implements IOptimizationProcessor
         return lowestCleanerSet;
     }
 
-    private Integer getMaximumCleanerCount(Integer roomSize, Integer capacity)
+    private Integer getCeil(Integer dividend, Integer divisor)
     {
-        return (roomSize / capacity) + 1;
+        return (dividend % divisor == 0) ? (dividend / divisor) : ((dividend / divisor) + 1);
     }
 }
