@@ -33,7 +33,7 @@ public class OptimizationProcessorTests
 	 * Test get ceil.
 	 */
 	@Test
-    public void Test_getCeil()
+    public void getCeilTest()
     {
         log.info("Testing Non-Public getCeil()...");
         Integer actual = ReflectionTestUtils.invokeMethod(optimizationProcessor,"getCeil",
@@ -46,7 +46,7 @@ public class OptimizationProcessorTests
 	 * Test find optimum combination method.
 	 */
 	@Test
-    public void Test_findOptimumCombination()
+    public void findOptimumCombinationTest()
     {
         log.info("Testing Non-Public findOptimumCombination()...");
         CleanerSet actual =
@@ -62,7 +62,7 @@ public class OptimizationProcessorTests
 	 * Test find optimum cleaner set method.
 	 */
 	@Test
-    public void Test_findOptimumCleanerSet()
+    public void findOptimumCleanerSetTest()
     {
         log.info("Testing Non-Public findOptimumCleanerSet()...");
         
@@ -111,7 +111,7 @@ public class OptimizationProcessorTests
 	 * Test get optimum solution method.
 	 */
 	@Test
-    public void Test_getOptimumSolution()
+    public void getOptimumSolutionTest()
     {
         log.info("Testing Public getOptimumSolution()...");
         List<CleanerSet> expected = new ArrayList<>();
@@ -145,7 +145,7 @@ public class OptimizationProcessorTests
 	 * Test cleaner set.
 	 */
 	@Test
-    public void Test_CleanerSet()
+    public void cleanerSetTest()
     {
         CleanerSet set1 = new CleanerSet();
         set1.setJunior(2);

@@ -29,7 +29,7 @@ public class UtilityTests
 	 * Test handle validation errors 1.
 	 */
 	@Test(expected = WorkforceValidationException.class)
-	public void Test_handleValidationErrors1()
+	public void handleValidationErrors1Test()
 	{
 		BeanPropertyBindingResult result = new BeanPropertyBindingResult(ERROR_NAME,ERROR_NAME);
 		result.addError(new ObjectError(ERROR_NAME,ERROR_MESSAGE));
@@ -42,9 +42,9 @@ public class UtilityTests
 	 * Test handle validation errors 2.
 	 */
 	@Test(expected = WorkforceValidationException.class)
-	public void Test_handleValidationErrors2()
+	public void handleValidationErrors2Test()
 	{
-		BeanPropertyBindingResult result = new BeanPropertyBindingResult("ERROR","ERROR");
+		BeanPropertyBindingResult result = new BeanPropertyBindingResult(ERROR_NAME,ERROR_NAME);
 		result.addError(new ObjectError(ERROR_NAME,ERROR_MESSAGE));
 		result.addError(new ObjectError(ERROR_NAME,ERROR_MESSAGE));
 		

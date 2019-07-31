@@ -27,7 +27,7 @@ public class WorkforceApplicationTests
 	 * Main application test.
 	 */
 	@Test
-	public void MainApplicationTest()
+	public void mainApplicationTest()
 	{
 		WorkforceApplication.main(new String[]{});
 	}

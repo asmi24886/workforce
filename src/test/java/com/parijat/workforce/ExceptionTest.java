@@ -24,7 +24,7 @@ public class ExceptionTest
 	 * Global exception handler test.
 	 */
 	@Test
-	public void GlobalExceptionHandlerTest()
+	public void globalExceptionHandlerTest()
 	{
 		WorkforceValidationException exception = new WorkforceValidationException(
 				"ERROR"

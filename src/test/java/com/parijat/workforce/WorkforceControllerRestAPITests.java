@@ -25,7 +25,6 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * The type Workforce controller rest api tests.
@@ -47,20 +46,24 @@ public class WorkforceControllerRestAPITests
     @MockBean
     private IOptimizationProcessor optimizationProcessor;
 	
+	private static final String ERROR_NAME = "ERROR";
+	private static final String ERROR_MESSAGE = "SAMPLE ERROR MESSAGE";
+	private static final String REQUEST = "request";
+	
 	/**
 	 * Test get optimum solution api sample 1.
 	 *
 	 * @throws Exception the exception
 	 */
 	@Test
-    public void Test_getOptimumSolutionAPI_Sample1() throws Exception
+    public void getOptimumSolutionAPISample1Test() throws Exception
     {
         RequestModel request = new RequestModel();
         request.setRooms(new Integer[]{35, 21, 17, 28});
         request.setSenior(10);
         request.setJunior(6);
 
-        Errors errors = new BeanPropertyBindingResult(request, "request");
+        Errors errors = new BeanPropertyBindingResult(request, REQUEST);
 
         given(controller.getOptimumSolution(request,errors)).willReturn(new ResponseEntity<>(prepareResultData1(), HttpStatus.OK));
 
@@ -74,14 +77,14 @@ public class WorkforceControllerRestAPITests
 	 * @throws Exception the exception
 	 */
 	@Test
-    public void Test_getOptimumSolutionAPI_Sample2() throws Exception
+    public void getOptimumSolutionAPISample2Test() throws Exception
     {
         RequestModel request = new RequestModel();
         request.setRooms(new Integer[]{24,28});
         request.setSenior(11);
         request.setJunior(6);
 
-        Errors errors = new BeanPropertyBindingResult(request, "request");
+        Errors errors = new BeanPropertyBindingResult(request, REQUEST);
 
         given(controller.getOptimumSolution(request,errors)).willReturn(new ResponseEntity<>(prepareResultData2(), HttpStatus.OK));
 
@@ -95,14 +98,14 @@ public class WorkforceControllerRestAPITests
 	 * @throws Exception the exception
 	 */
 	@Test
-    public void Test_getOptimumSolutionAPI_Sample3() throws Exception
+    public void getOptimumSolutionAPISample3Test() throws Exception
     {
         RequestModel request = new RequestModel();
         request.setRooms(new Integer[]{0});
         request.setSenior(11);
         request.setJunior(6);
 
-        Errors errors = new BeanPropertyBindingResult(request, "request");
+        Errors errors = new BeanPropertyBindingResult(request, REQUEST);
 
         given(controller.getOptimumSolution(request,errors)).willReturn(new ResponseEntity<>(prepareResultData3(), HttpStatus.OK));
 
@@ -116,14 +119,14 @@ public class WorkforceControllerRestAPITests
 	 * @throws Exception the exception
 	 */
 	@Test
-    public void Test_getOptimumSolutionAPI_Sample4() throws Exception
+    public void getOptimumSolutionAPISample4Test() throws Exception
     {
         RequestModel request = new RequestModel();
         request.setRooms(new Integer[]{110});
         request.setSenior(11);
         request.setJunior(6);
 
-        Errors errors = new BeanPropertyBindingResult(request, "request");
+        Errors errors = new BeanPropertyBindingResult(request, REQUEST);
 
         given(controller.getOptimumSolution(request,errors)).willReturn(new ResponseEntity<>(prepareResultData3(), HttpStatus.OK));
 
@@ -137,14 +140,14 @@ public class WorkforceControllerRestAPITests
 	 * @throws Exception the exception
 	 */
 	@Test
-    public void Test_getOptimumSolutionAPI_Sample5() throws Exception
+    public void getOptimumSolutionAPISample5Test() throws Exception
     {
         RequestModel request = new RequestModel();
         request.setRooms(new Integer[]{11});
         request.setSenior(10);
         request.setJunior(6);
 
-        Errors errors = new BeanPropertyBindingResult(request, "request");
+        Errors errors = new BeanPropertyBindingResult(request, REQUEST);
 
         given(controller.getOptimumSolution(request,errors)).willReturn(new ResponseEntity<>(prepareResultData4(), HttpStatus.OK));
 
@@ -158,14 +161,14 @@ public class WorkforceControllerRestAPITests
 	 * @throws Exception the exception
 	 */
 	@Test
-    public void Test_getOptimumSolutionAPI_Sample6() throws Exception
+    public void getOptimumSolutionAPISample6Test() throws Exception
     {
         RequestModel request = new RequestModel();
         request.setRooms(new Integer[]{-10});
         request.setSenior(11);
         request.setJunior(6);
 
-        Errors errors = new BeanPropertyBindingResult(request, "request");
+        Errors errors = new BeanPropertyBindingResult(request, REQUEST);
 
         given(controller.getOptimumSolution(request,errors)).willReturn(new ResponseEntity<>(prepareResultData3(), HttpStatus.OK));
 
@@ -179,14 +182,14 @@ public class WorkforceControllerRestAPITests
 	 * @throws Exception the exception
 	 */
 	@Test
-    public void Test_getOptimumSolutionAPI_UnprocessableEntity1() throws Exception
+    public void getOptimumSolutionAPIUnprocessableEntity1Test() throws Exception
     {
         RequestModel request = new RequestModel();
         request.setRooms(null);
         request.setSenior(11);
         request.setJunior(6);
     
-        Errors errors = new BeanPropertyBindingResult(request, "request");
+        Errors errors = new BeanPropertyBindingResult(request, REQUEST);
     
         given(controller.getOptimumSolution(request,errors)).willReturn(new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY));
     
@@ -201,14 +204,14 @@ public class WorkforceControllerRestAPITests
 	 * @throws Exception the exception
 	 */
 	@Test
-    public void Test_getOptimumSolutionAPI_UnprocessableEntity2() throws Exception
+    public void getOptimumSolutionAPIUnprocessableEntity2Test() throws Exception
     {
         RequestModel request = new RequestModel();
         request.setRooms(new Integer[] {});
         request.setSenior(11);
         request.setJunior(6);
     
-        Errors errors = new BeanPropertyBindingResult(request, "request");
+        Errors errors = new BeanPropertyBindingResult(request, REQUEST);
     
         given(controller.getOptimumSolution(request, errors)).willReturn(new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY));
     
@@ -222,15 +225,15 @@ public class WorkforceControllerRestAPITests
 	 * @throws Exception the exception
 	 */
 	@Test
-    public void Test_getOptimumSolutionAPI_UnprocessableEntity3() throws Exception
+    public void getOptimumSolutionAPIUnprocessableEntity3Test() throws Exception
     {
         RequestModel request = new RequestModel();
         request.setRooms(new Integer[]{35});
         request.setSenior(null);
         request.setJunior(null);
         
-        BeanPropertyBindingResult result = new BeanPropertyBindingResult("ERROR","ERROR");
-        result.addError(new ObjectError("ERROR","SAMPLE ERROR"));
+        BeanPropertyBindingResult result = new BeanPropertyBindingResult(ERROR_NAME,ERROR_NAME);
+        result.addError(new ObjectError(ERROR_NAME,ERROR_MESSAGE));
         
         given(controller.getOptimumSolution(request, result)).willReturn(new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY));
         
@@ -245,8 +248,7 @@ public class WorkforceControllerRestAPITests
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
-                .andDo(print())
-                .andExpect(status().isOk());
+                .andDo(print());
     }
 
     private List<CleanerSet> prepareResultData1()

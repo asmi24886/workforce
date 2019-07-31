@@ -33,6 +33,8 @@ public class WorkforceControllerTests
 
     @Autowired
     private WorkforceController workforceController;
+    
+    private static final String REQUEST = "request";
 
     private List<CleanerSet> prepareTestData()
     {
@@ -54,14 +56,14 @@ public class WorkforceControllerTests
 	 * Test get optimum solution.
 	 */
 	@Test
-    public void Test_getOptimumSolution()
+    public void getOptimumSolutionTest()
     {
         RequestModel request = new RequestModel();
         request.setRooms(new Integer[]{24,28});
         request.setSenior(11);
         request.setJunior(6);
 
-        Errors errors = new BeanPropertyBindingResult(request, "request");
+        Errors errors = new BeanPropertyBindingResult(request, REQUEST);
 
         ResponseEntity<Object> expected = new ResponseEntity<>(prepareTestData(), HttpStatus.OK);
         ResponseEntity<Object> actual = workforceController.getOptimumSolution(request,errors);
@@ -73,14 +75,14 @@ public class WorkforceControllerTests
 	 * Test get optimum solution expection.
 	 */
 	@Test(expected = WorkforceValidationException.class)
-    public void Test_getOptimumSolution_Expection()
+    public void getOptimumSolutionExpectionTest()
     {
         RequestModel request = new RequestModel();
         request.setRooms(new Integer[]{24,28});
         request.setSenior(1);
         request.setJunior(6);
     
-        Errors errors = new BeanPropertyBindingResult(request, "request");
+        Errors errors = new BeanPropertyBindingResult(request, REQUEST);
     
         workforceController.getOptimumSolution(request,errors);
     }
@@ -89,14 +91,14 @@ public class WorkforceControllerTests
 	 * Test get optimum solution expection 2.
 	 */
 	@Test(expected = WorkforceValidationException.class)
-    public void Test_getOptimumSolution_Expection2()
+    public void getOptimumSolutionExpection2Test()
     {
         RequestModel request = new RequestModel();
         request.setRooms(new Integer[]{124});
         request.setSenior(10);
         request.setJunior(6);
         
-        Errors errors = new BeanPropertyBindingResult(request, "request");
+        Errors errors = new BeanPropertyBindingResult(request, REQUEST);
         
         workforceController.getOptimumSolution(request,errors);
     }
