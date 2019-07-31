@@ -3,12 +3,13 @@ package com.parijat.workforce.model;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * The Cleaner object of senior and junior.
+ */
 @Getter
 @Setter
 @ToString
@@ -18,8 +19,11 @@ public class CleanerSet implements Serializable
 
     private Integer senior;
     private Integer junior;
-
-    public CleanerSet()
+	
+	/**
+	 * Instantiates a new Cleaner set object with zero.
+	 */
+	public CleanerSet()
     {
         this.senior=0;
         this.junior=0;
@@ -33,4 +37,10 @@ public class CleanerSet implements Serializable
         return Objects.equals(senior, that.senior) &&
                 Objects.equals(junior, that.junior);
     }
+	
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(senior, junior);
+	}
 }

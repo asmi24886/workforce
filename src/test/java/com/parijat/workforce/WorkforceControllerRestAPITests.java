@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,9 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * The type Workforce controller rest api tests.
+ */
 @RunWith(SpringRunner.class)
 @Slf4j
 @WebMvcTest(value = WorkforceController.class)
@@ -42,8 +46,13 @@ public class WorkforceControllerRestAPITests
 
     @MockBean
     private IOptimizationProcessor optimizationProcessor;
-
-    @Test
+	
+	/**
+	 * Test get optimum solution api sample 1.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
     public void Test_getOptimumSolutionAPI_Sample1() throws Exception
     {
         RequestModel request = new RequestModel();
@@ -58,8 +67,13 @@ public class WorkforceControllerRestAPITests
         String json = "{ \"rooms\": [35, 21, 17, 28], \"senior\": 10, \"junior\": 6 }";
         callRestAPItoOptimize(json);
     }
-
-    @Test
+	
+	/**
+	 * Test get optimum solution api sample 2.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
     public void Test_getOptimumSolutionAPI_Sample2() throws Exception
     {
         RequestModel request = new RequestModel();
@@ -74,8 +88,13 @@ public class WorkforceControllerRestAPITests
         String json = "{ \"rooms\": [24,28], \"senior\": 11, \"junior\": 6 }";
         callRestAPItoOptimize(json);
     }
-
-    @Test
+	
+	/**
+	 * Test get optimum solution api sample 3.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
     public void Test_getOptimumSolutionAPI_Sample3() throws Exception
     {
         RequestModel request = new RequestModel();
@@ -90,8 +109,13 @@ public class WorkforceControllerRestAPITests
         String json = "{ \"rooms\": [0], \"senior\": 11, \"junior\": 6 }";
         callRestAPItoOptimize(json);
     }
-
-    @Test
+	
+	/**
+	 * Test get optimum solution api sample 4.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
     public void Test_getOptimumSolutionAPI_Sample4() throws Exception
     {
         RequestModel request = new RequestModel();
@@ -106,8 +130,13 @@ public class WorkforceControllerRestAPITests
         String json = "{ \"rooms\": [110], \"senior\": 11, \"junior\": 6 }";
         callRestAPItoOptimize(json);
     }
-
-    @Test
+	
+	/**
+	 * Test get optimum solution api sample 5.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
     public void Test_getOptimumSolutionAPI_Sample5() throws Exception
     {
         RequestModel request = new RequestModel();
@@ -122,8 +151,13 @@ public class WorkforceControllerRestAPITests
         String json = "{ \"rooms\": [11], \"senior\": 10, \"junior\": 6 }";
         callRestAPItoOptimize(json);
     }
-
-    @Test
+	
+	/**
+	 * Test get optimum solution api sample 6.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
     public void Test_getOptimumSolutionAPI_Sample6() throws Exception
     {
         RequestModel request = new RequestModel();
@@ -136,6 +170,71 @@ public class WorkforceControllerRestAPITests
         given(controller.getOptimumSolution(request,errors)).willReturn(new ResponseEntity<>(prepareResultData3(), HttpStatus.OK));
 
         String json = "{ \"rooms\": [-10], \"senior\": 11, \"junior\": 6 }";
+        callRestAPItoOptimize(json);
+    }
+	
+	/**
+	 * Test get optimum solution api unprocessable entity 1.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+    public void Test_getOptimumSolutionAPI_UnprocessableEntity1() throws Exception
+    {
+        RequestModel request = new RequestModel();
+        request.setRooms(null);
+        request.setSenior(11);
+        request.setJunior(6);
+    
+        Errors errors = new BeanPropertyBindingResult(request, "request");
+    
+        given(controller.getOptimumSolution(request,errors)).willReturn(new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY));
+    
+        String json = "{ \"rooms\": null, \"senior\": 11, \"junior\": 6 }";
+        callRestAPItoOptimize(json);
+        
+    }
+	
+	/**
+	 * Test get optimum solution api unprocessable entity 2.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+    public void Test_getOptimumSolutionAPI_UnprocessableEntity2() throws Exception
+    {
+        RequestModel request = new RequestModel();
+        request.setRooms(new Integer[] {});
+        request.setSenior(11);
+        request.setJunior(6);
+    
+        Errors errors = new BeanPropertyBindingResult(request, "request");
+    
+        given(controller.getOptimumSolution(request, errors)).willReturn(new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY));
+    
+        String json = "{ \"rooms\": [], \"senior\": 11, \"junior\": 6 }";
+        callRestAPItoOptimize(json);
+    }
+	
+	/**
+	 * Test get optimum solution api unprocessable entity 3.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Test
+    public void Test_getOptimumSolutionAPI_UnprocessableEntity3() throws Exception
+    {
+        RequestModel request = new RequestModel();
+        request.setRooms(new Integer[]{35});
+        request.setSenior(null);
+        request.setJunior(null);
+        
+        BeanPropertyBindingResult result = new BeanPropertyBindingResult("ERROR","ERROR");
+        result.addError(new ObjectError("ERROR","SAMPLE ERROR"));
+        
+        given(controller.getOptimumSolution(request, result)).willReturn(new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY));
+        
+        String json = "{ \"rooms\": [35], \"senior\": null, \"junior\": null }";
         callRestAPItoOptimize(json);
     }
 

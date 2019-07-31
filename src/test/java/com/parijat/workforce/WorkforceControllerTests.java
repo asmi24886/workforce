@@ -1,6 +1,7 @@
 package com.parijat.workforce;
 
 import com.parijat.workforce.controller.WorkforceController;
+import com.parijat.workforce.exception.WorkforceValidationException;
 import com.parijat.workforce.model.CleanerSet;
 import com.parijat.workforce.model.RequestModel;
 import com.parijat.workforce.processor.OptimizationProcessorImpl;
@@ -19,6 +20,9 @@ import org.springframework.validation.Errors;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Workforce controller tests.
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Slf4j
@@ -45,8 +49,11 @@ public class WorkforceControllerTests
 
         return expected;
     }
-
-    @Test
+	
+	/**
+	 * Test get optimum solution.
+	 */
+	@Test
     public void Test_getOptimumSolution()
     {
         RequestModel request = new RequestModel();
@@ -60,7 +67,39 @@ public class WorkforceControllerTests
         ResponseEntity<Object> actual = workforceController.getOptimumSolution(request,errors);
 
         Assert.assertEquals(expected,actual);
-
-
     }
+	
+	/**
+	 * Test get optimum solution expection.
+	 */
+	@Test(expected = WorkforceValidationException.class)
+    public void Test_getOptimumSolution_Expection()
+    {
+        RequestModel request = new RequestModel();
+        request.setRooms(new Integer[]{24,28});
+        request.setSenior(1);
+        request.setJunior(6);
+    
+        Errors errors = new BeanPropertyBindingResult(request, "request");
+    
+        workforceController.getOptimumSolution(request,errors);
+    }
+	
+	/**
+	 * Test get optimum solution expection 2.
+	 */
+	@Test(expected = WorkforceValidationException.class)
+    public void Test_getOptimumSolution_Expection2()
+    {
+        RequestModel request = new RequestModel();
+        request.setRooms(new Integer[]{124});
+        request.setSenior(10);
+        request.setJunior(6);
+        
+        Errors errors = new BeanPropertyBindingResult(request, "request");
+        
+        workforceController.getOptimumSolution(request,errors);
+    }
+    
+    
 }

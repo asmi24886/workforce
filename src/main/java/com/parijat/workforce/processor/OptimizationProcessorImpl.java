@@ -1,5 +1,6 @@
 package com.parijat.workforce.processor;
 
+import com.parijat.workforce.exception.WorkforceValidationException;
 import com.parijat.workforce.model.CleanerSet;
 import com.parijat.workforce.utility.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,33 +10,80 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Optimization processor.
+ */
 @Component
 public class OptimizationProcessorImpl implements IOptimizationProcessor
 {
     @Autowired
     private Utility utility;
-
+    
+    /**
+     * Minimum number of Seniors required
+     */
     @Value("${workforce.minimumSeniorCount:1}")
     private Integer minimumSerniorCount;
-
+    
+    /**
+     * Minimum number of Juniors required
+     */
     @Value("${workforce.minimumJuniorCount:0}")
     private Integer minimumJuniorCount;
-
+    
+    /**
+     * Gets optimum solution.
+     *
+     * @param rooms          the array of rooms
+     * @param seniorCapacity the senior capacity
+     * @param juniorCapacity the junior capacity
+     * @return the optimum solution
+     */
     @Override
     public List<CleanerSet> getOptimumSolution(Integer[] rooms, Integer seniorCapacity, Integer juniorCapacity)
     {
         List<CleanerSet> cleanerSetList = new ArrayList<>();
+        
+        if(seniorCapacity <= juniorCapacity)
+        {
+            throw new WorkforceValidationException("Cleaning capacity of seniors should be greater than juniors'");
+        }
 
         // Loop through the rooms array
         for(Integer numberOfRooms : rooms)
         {
+            if(numberOfRooms > 100)
+            {
+                throw new WorkforceValidationException("Room size can not be bigger than 100");
+            }
+            
             CleanerSet cleanerSet = findOptimumCleanerSet(numberOfRooms, seniorCapacity, juniorCapacity);
             cleanerSetList.add(cleanerSet);
         }
 
         return cleanerSetList;
     }
-
+    
+    /**
+     * This method finds out the total numner of cleaners including the
+     * minimum number of Seniors and Juniors required for each set.
+     *
+     * To reduce the complexity, it tries to find the optimum combination of seniors and juniors using
+     * three cases after deducting the capacity of minimum number of seniors and juniors.
+     *
+     * 1. It first tries if only the seniors can complete the remaining rooms without
+     * over-capacity.
+     * 2. Otherwise, it tries to find only juniors can complete the remaining rooms without
+     * over-capacity
+     * 3. Finally, it tries to find the optimum combination of seniors and juniors whose
+     * total capacity is the closest number to the total number of rooms.
+     *
+     * @param numberOfRooms Each sum of rooms to be cleaned
+     * @param seniorCapacity the senior capacity
+     * @param juniorCapacity the junior capacity
+     * @return the optimum combination of seniors and juniors whose total capacity
+     * is the closest to the sum of the rooms
+     */
     private CleanerSet findOptimumCleanerSet(Integer numberOfRooms, Integer seniorCapacity, Integer juniorCapacity)
     {
         Integer remainingRoomNumbers;
@@ -81,7 +129,17 @@ public class OptimizationProcessorImpl implements IOptimizationProcessor
 
         return cleanerSet;
     }
-
+    
+    /**
+     * To find the optimum combination of seniors and juniors for the
+     * room capacity.
+     *
+     * @param roomCapacity the remaining room capacity
+     * @param maxSeniors maximum number of seniors can clear the room
+     * @param seniorCapacity cleaning capacity of the senior
+     * @param juniorCapacity cleaning capacity of the junior
+     * @return
+     */
     private CleanerSet findOptimumCombination(Integer roomCapacity, Integer maxSeniors, Integer seniorCapacity,
                                               Integer juniorCapacity)
     {
@@ -123,7 +181,14 @@ public class OptimizationProcessorImpl implements IOptimizationProcessor
 
         return lowestCleanerSet;
     }
-
+    
+    /**
+     * Function to get the ceiling
+     *
+     * @param dividend the dividend
+     * @param divisor the divisor
+     * @return
+     */
     private Integer getCeil(Integer dividend, Integer divisor)
     {
         return (dividend % divisor == 0) ? (dividend / divisor) : ((dividend / divisor) + 1);
