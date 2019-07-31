@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Optimization processor.
+ * The class of Optimization processor.
  */
 @Component
 public class OptimizationProcessorImpl implements IOptimizationProcessor
