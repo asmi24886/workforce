@@ -79,12 +79,12 @@ Z >= Each Sum of the Rooms in the Structure Array
 ------------
 
 
-The process of getting the optimum combination of senior and junior cleaners, and also to reduce the time of code exececution, it is done through three steps - 
+The process of getting the optimum combination of senior and junior cleaners, and also to reduce the time of code execution, the logic is implemented through three steps - 
 
 1. The total capacity of minimum number of seniors or juniors are deducted from each sum of the rooms present in the array.
 2. It first tries if only the seniors can complete the remaining rooms without over-capacity.
-3. Otherwise, it tries to find only juniors can complete the remaining rooms without over-capacity.
-4. Finally, it tries to find the optimum combination of seniors and juniors whose total capacity is the closest number to the total number of rooms.
+3. Otherwise, it tries to find, if only juniors can complete the remaining rooms without over-capacity.
+4. Else, it tries to find the optimum combination of seniors and juniors whose total capacity is the closest number to the total number of rooms.
 
 ## The Application
 
