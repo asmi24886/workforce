@@ -58,15 +58,21 @@ the structures will have more than 100 rooms.
 
 To minimize the over-capacity, we need to find the minimum total capacity by the set of seniors and juniors which is equal or just above the each sum of the rooms in the array.
 
+For each sum of the rooms in the array,
+
 Let us assume, the optimum combination of seniors (including the default 1) and juniors are X and Y respectively.
 
-Also, let Z be the total capacity can be contributed by X number of seniors and Y number of juniors.
+Also, let Z be the total capacity, which is contributed by X number of seniors and Y number of juniors.
 
-Z should be equals or greater than each sum of the rooms in the structure array.
+Z should be equal or greater than the sum of the rooms in the structure array for which we are calculating the combination.
 
-So, we need to find -
-
-Min Z = (X \* senior cleaning capacity) + (Y \* junior cleaning capacity) where,
+So, we need to find the Min(Z) for each sum of the rooms where,
+<br/>
+<br/>
+Z = (X \* senior cleaning capacity) + (Y \* junior cleaning capacity)
+<br/>
+and
+<br/>
 Z >= Each Sum of the Rooms in the Structure Array
 
 
@@ -126,7 +132,7 @@ To run the jar file -
 java -jar workforce-0.0.1-SNAPSHOT.jar
 ```
 
-As, this is a Spring Boot application, it can directly be run by -
+As, this is a Spring Boot application, it can be run directly from the source like below -
 ```bash
 mvn spring-boot:run
 ```
