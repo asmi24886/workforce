@@ -100,7 +100,8 @@ The above solution is implemented using the Spring Boot Framework. The applicati
 
 ## The Configurations
 
-The application supports configurable number of minimum number of senior an junior cleaners required for each optimum set. By default, the minimum senior count and minimum junior count are set to 1 and 0 respectively.
+The application supports configurable number of minimum senior or junior cleaners required for each optimum set. By default, the minimum 
+senior count and minimum junior count are set to 1 and 0 respectively.
 
 The configuration can be modified through ../src/main/resource/application.properties
 ```
