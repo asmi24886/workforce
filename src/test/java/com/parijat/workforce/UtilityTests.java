@@ -26,10 +26,10 @@ public class UtilityTests
 	private static final String ERROR_MESSAGE = "SAMPLE ERROR MESSAGE";
 	
 	/**
-	 * Test handle validation errors 1.
+	 * Test handle validation single error.
 	 */
 	@Test(expected = WorkforceValidationException.class)
-	public void handleValidationErrors1Test()
+	public void handleValidationSingleErrorTest()
 	{
 		BeanPropertyBindingResult result = new BeanPropertyBindingResult(ERROR_NAME,ERROR_NAME);
 		result.addError(new ObjectError(ERROR_NAME,ERROR_MESSAGE));
@@ -39,10 +39,10 @@ public class UtilityTests
 	}
 	
 	/**
-	 * Test handle validation errors 2.
+	 * Test handle validation multiple errors.
 	 */
 	@Test(expected = WorkforceValidationException.class)
-	public void handleValidationErrors2Test()
+	public void handleValidationMultipleErrorsTest()
 	{
 		BeanPropertyBindingResult result = new BeanPropertyBindingResult(ERROR_NAME,ERROR_NAME);
 		result.addError(new ObjectError(ERROR_NAME,ERROR_MESSAGE));

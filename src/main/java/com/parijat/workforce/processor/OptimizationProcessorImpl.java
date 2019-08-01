@@ -52,9 +52,9 @@ public class OptimizationProcessorImpl implements IOptimizationProcessor
         // Loop through the rooms array
         for(Integer numberOfRooms : rooms)
         {
-            if(numberOfRooms > 100)
+            if(numberOfRooms > 100 || numberOfRooms < 0)
             {
-                throw new WorkforceValidationException("Room size can not be bigger than 100");
+                throw new WorkforceValidationException("Room size can not be bigger than 100 or less than 0");
             }
             
             CleanerSet cleanerSet = findOptimumCleanerSet(numberOfRooms, seniorCapacity, juniorCapacity);
@@ -138,7 +138,7 @@ public class OptimizationProcessorImpl implements IOptimizationProcessor
      * @param maxSeniors maximum number of seniors can clear the room
      * @param seniorCapacity cleaning capacity of the senior
      * @param juniorCapacity cleaning capacity of the junior
-     * @return
+     * @return optimum cleaner set
      */
     private CleanerSet findOptimumCombination(Integer roomCapacity, Integer maxSeniors, Integer seniorCapacity,
                                               Integer juniorCapacity)
@@ -187,7 +187,7 @@ public class OptimizationProcessorImpl implements IOptimizationProcessor
      *
      * @param dividend the dividend
      * @param divisor the divisor
-     * @return
+     * @return Ceiling value as Integer
      */
     private Integer getCeil(Integer dividend, Integer divisor)
     {
