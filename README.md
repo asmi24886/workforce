@@ -60,7 +60,7 @@ To minimize the over-capacity, we need to find the minimum total capacity by the
 
 For each sum of the rooms in the array,
 
-Let us assume, the optimum combination of seniors (including the default 1) and juniors are X and Y respectively.
+Let us assume, the optimum combination of seniors (including the minimum count of seniors and juniors) and juniors are X and Y respectively.
 
 Also, let Z be the total capacity, which is contributed by X number of seniors and Y number of juniors.
 
