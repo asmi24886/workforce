@@ -79,7 +79,8 @@ Z >= Each Sum of the Rooms in the Structure Array
 ------------
 
 
-The process of getting the optimum combination of senior and junior cleaners, and also to reduce the time of code execution, the logic is implemented through three steps - 
+The process of getting the optimum combination of senior and junior cleaners, and also to reduce the time of code execution, the logic is 
+implemented through four steps - 
 
 1. The total capacity of minimum number of seniors or juniors are deducted from each sum of the rooms present in the array.
 2. It first tries if only the seniors can complete the remaining rooms without over-capacity.
@@ -113,6 +114,8 @@ There are two other configurations present in the same file to configure the ser
 
 ```
 server.port=8999
+
+# the timestamp format, in case of an error
 spring.jackson.date-format=yyyy-MM-dd HH:mm:ss
 ```
 
